@@ -1,0 +1,22 @@
+# IDE
+.idea
+*.iml
+
+# Compiled source
+*.class
+out
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Log file
+*.log
+
+# OS generated files
+Thumbs.db
+desktop.ini
