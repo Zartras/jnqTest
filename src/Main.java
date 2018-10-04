@@ -59,29 +59,31 @@ public class Main {
         setConfigs(configFilename);
         handleStartLogging();
         printShares(getServer(serverAndShare));
-        final Mount mount = mount(serverAndShare, domainAndUsername, password);
-        if (mount == null) {
-            return;
-        }
+        Mount mount = null;
+        try {
+            mount = mount(serverAndShare, domainAndUsername, password);
 
-        writeRandomData(mount, "jNQTest_0.txt", 0);
-        writeRandomData(mount, "jNQTest_1.txt", 1);
-        writeRandomData(mount, "jNQTest_2.txt", 2);
-        writeRandomData(mount, "jNQTest_3.txt", 3);
-        writeRandomData(mount, "jNQTest_1023.txt", 1023);
-        writeRandomData(mount, "jNQTest_1024.txt", 1024);
-        writeRandomData(mount, "jNQTest_1025.txt", 1025);
-        writeRandomData(mount, "jNQTest_2047.txt", 2047);
-        writeRandomData(mount, "jNQTest_2048.txt", 2048);
-        writeRandomData(mount, "jNQTest_2049.txt", 2049);
-        writeRandomData(mount, "jNQTest_1MB.txt", 1024 * 1024); // 1 MB
-  //      writeRandomData(mount, "jNQTest_1GB.txt", 1024 * 1024 * 1024); // 1 GB
-        unmount(mount);
-        Capture.stop();
-        TraceLog.get().stop();
-        Client.stop(); // Need to stop all jNQ threads, program won't finish without it;
-        printLog("Client.stop() called");
-        printLog("Process waiting to finish...");
+//          writeRandomData(mount, "jNQTest_0.txt", 0);
+//          writeRandomData(mount, "jNQTest_1.txt", 1);
+//          writeRandomData(mount, "jNQTest_2.txt", 2);
+//          writeRandomData(mount, "jNQTest_3.txt", 3);
+//          writeRandomData(mount, "jNQTest_1023.txt", 1023);
+//          writeRandomData(mount, "jNQTest_1024.txt", 1024);
+//          writeRandomData(mount, "jNQTest_1025.txt", 1025);
+//          writeRandomData(mount, "jNQTest_2047.txt", 2047);
+//          writeRandomData(mount, "jNQTest_2048.txt", 2048);
+//          writeRandomData(mount, "jNQTest_2049.txt", 2049);
+//          writeRandomData(mount, "jNQTest_1MB.txt", 1024 * 1024); // 1 MB
+//          writeRandomData(mount, "jNQTest_1GB.txt", 1024 * 1024 * 1024); // 1 GB
+        } finally {
+            unmount(mount);
+
+            Capture.stop();
+            TraceLog.get().stop();
+            Client.stop(); // Need to stop all jNQ threads, program won't finish without it;
+            printLog("Client.stop() called");
+            printLog("Process waiting to finish...");
+        }
     }
 
     private static void setConfigs(String configFilename) {
