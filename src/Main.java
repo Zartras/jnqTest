@@ -49,7 +49,7 @@ public class Main {
             configFilename = null;
         }
 
-        System.out.printf("jNQ jar: %s%n", "jNQ-1.0.2.br-1.1.jar");
+        System.out.printf("jNQ jar: %s%n", "jNQ-1.0.2.br-1.3.jar");
         final JnqVersion jnqVersion = new JnqVersion();
         System.out.printf("jNQ version: %s%n", jnqVersion.getJnqVersion());
         System.out.printf("jNQ build time: %s%n%n", jnqVersion.getJnqBuildTime());
@@ -305,12 +305,34 @@ public class Main {
             System.out.printf("%n");
 
             System.out.printf("Successfully written random data to remotefile='%s' (%,d bytes).%n", remotefile, writtenLength);
-        } catch (NqException | IOException e) {
+        } catch (NqException e) {
             System.out.printf("%n");
-            System.out.println("e.getCause(): " + e.getCause());
+            e.printStackTrace();
+            System.out.printf("Exception writing random data to remotefile='%s'.%n", remotefile);
+        } catch (IOException e) {
+            System.out.printf("%n");
+            printErrorMessage(e);
 
             e.printStackTrace();
             System.out.printf("Exception writing random data to remotefile='%s'.%n", remotefile);
+        }
+    }
+
+    private static void printErrorMessage(IOException exception) {
+        System.out.println("exception: " + exception.getClass().getName());
+        final String message = exception.getMessage();
+        Throwable cause = exception.getCause();
+        System.out.println("cause: " + cause);
+        if (cause instanceof NqException) {
+            NqException nqException = (NqException) cause;
+            int nqErrorCode = nqException.getErrCode();
+            String nqMessage = nqException.getMessage();
+            System.out.printf("Exception '%s', Cause: '%s', Error Code: %d.%n", message, nqMessage, nqErrorCode);
+        } else if (cause != null) {
+            String causeMessage = cause.getMessage();
+            System.out.printf("Exception '%s', Cause: '%s'.%n", message, causeMessage);
+        } else {
+            System.out.printf("Exception '%s'.%n", message);
         }
     }
 
