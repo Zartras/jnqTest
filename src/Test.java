@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class Main {
+public class Test {
     private static String stringTestContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut eni\r\n";
     private static byte[] testContent = stringTestContent.getBytes(StandardCharsets.UTF_8);
 
@@ -49,7 +49,6 @@ public class Main {
             configFilename = null;
         }
 
-        System.out.printf("jNQ jar: %s%n", "jNQ-1.0.2.br-1.3.jar");
         final JnqVersion jnqVersion = new JnqVersion();
         System.out.printf("jNQ version: %s%n", jnqVersion.getJnqVersion());
         System.out.printf("jNQ build time: %s%n%n", jnqVersion.getJnqBuildTime());
@@ -236,6 +235,8 @@ public class Main {
         printLog("Getting shares done");
     }
 
+    private static final boolean MOUNT_IS_READ_ACCESS = true;
+
     private static Mount mount(String serverAndShare, String domainAndUsername, String password) {
         printLog("Mount Start");
 
@@ -247,7 +248,7 @@ public class Main {
                     getDomain(domainAndUsername)
             );
 
-            mount = new Mount(getServer(serverAndShare), getShare(serverAndShare), credentials);
+            mount = new Mount(getServer(serverAndShare), getShare(serverAndShare), credentials, MOUNT_IS_READ_ACCESS);
             printLog("Mount Done");
             Socket socket = mount.getShare().getUser().getServer().getTransport().getSocket();
             System.out.printf(
